@@ -1,0 +1,77 @@
+# .gitignore for Fleet Management System
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# Logs
+logs/
+*.log
+application-*.log
+
+# Spring Boot
+spring-boot-starter-parent.xml
+
+# Database
+*.db
+*.sqlite
+
+# Docker volumes
+docker/volumes/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Test coverage
+coverage/
+*.exec
+
+# Environment variables
+.env
+.env.local
+*.env
+
+# Application specific
+data/
+uploads/
