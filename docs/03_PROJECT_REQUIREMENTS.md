@@ -211,7 +211,6 @@ Severity: HIGH
 Message: "Truck [truckId] low tire pressure: [tire_position]=[pressure] PSI"
 ```
 
-
 ### Data Model
 
 **ViolationEvent** (to be published to Kafka):
