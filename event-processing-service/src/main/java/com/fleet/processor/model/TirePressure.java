@@ -1,4 +1,4 @@
-package com.fleet.telemetry.model;
+package com.fleet.processor.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
