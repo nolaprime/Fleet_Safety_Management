@@ -49,9 +49,16 @@ public class TelemetryProducer {
             // 3. Value: the actual data to send
             kafkaTemplate.send(rawTelemetryTopic, telemetryData.getTruckId(), telemetryData);
             
-            log.info("✅ Telemetry data sent to Kafka - Truck: {}, Speed: {} km/h", 
+            log.info("✅ Telemetry data sent to Kafka - Truck: {}, Speed: {} km/h, Timestamp: {}, Driver ID: {}, Fuel Level: {}%, Engine Temp: {} °C, Location: lat {}, long {}, Tire Pressure: FL {} psi, FR {} psi, RL {} psi, RR {} psi", 
                     telemetryData.getTruckId(), 
-                    telemetryData.getSpeed());
+                    telemetryData.getSpeed(),
+                    telemetryData.getTimestamp(),
+                    telemetryData.getDriverId(),
+                    telemetryData.getFuelLevel(),
+                    telemetryData.getEngineTemp(),
+                    telemetryData.getLocation(),
+                    telemetryData.getTirePressure());
+
                     
         } catch (Exception e) {
             log.error("❌ Failed to send telemetry data to Kafka: {}", e.getMessage());
