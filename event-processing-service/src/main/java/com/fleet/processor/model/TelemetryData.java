@@ -30,4 +30,10 @@ public class TelemetryData {
      * Timestamp when the data was collected
      */
     private Long timestamp;
+
+    private String driverId;
+    private Double fuelLevel;
+    private Double engineTemp;
+    private Location location;
+    private TirePressure tirePressure;
 }

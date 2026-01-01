@@ -51,6 +51,21 @@ public class TelemetryConsumer {
             log.info("   └─ Truck ID: {}", telemetryData.getTruckId());
             log.info("   └─ Speed: {} km/h", telemetryData.getSpeed());
             log.info("   └─ Timestamp: {}", formattedTime);
+            log.info("   └─ Driver ID: {}", telemetryData.getDriverId());
+            log.info("   └─ Fuel Level: {}%", telemetryData.getFuelLevel());
+            log.info("   └─ Engine Temp: {} °C", telemetryData.getEngineTemp());
+            if (telemetryData.getLocation() != null) {
+                log.info("   └─ Location: lat {}, long {}",
+                        telemetryData.getLocation().getLatitude(),
+                        telemetryData.getLocation().getLongitude());
+            } else {
+                log.info("   └─ Location: N/A");
+            }
+            log.info("  └─ Tire Pressure: FL {} psi, FR {} psi, RL {} psi, RR {} psi",
+                    telemetryData.getTirePressure().getFrontLeft(),
+                    telemetryData.getTirePressure().getFrontRight(),
+                    telemetryData.getTirePressure().getRearLeft(),
+                    telemetryData.getTirePressure().getRearRight());
             
             // Here you would add your business logic
             // For example:
