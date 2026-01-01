@@ -54,7 +54,13 @@ public class TelemetryConsumer {
             log.info("   └─ Driver ID: {}", telemetryData.getDriverId());
             log.info("   └─ Fuel Level: {}%", telemetryData.getFuelLevel());
             log.info("   └─ Engine Temp: {} °C", telemetryData.getEngineTemp());
-            log.info("   └─ Location: lat {}, long {}", telemetryData.getLocation().getLatitude(), telemetryData.getLocation().getLongitude());
+            if (telemetryData.getLocation() != null) {
+                log.info("   └─ Location: lat {}, long {}",
+                        telemetryData.getLocation().getLatitude(),
+                        telemetryData.getLocation().getLongitude());
+            } else {
+                log.info("   └─ Location: N/A");
+            }
             log.info("  └─ Tire Pressure: FL {} psi, FR {} psi, RL {} psi, RR {} psi",
                     telemetryData.getTirePressure().getFrontLeft(),
                     telemetryData.getTirePressure().getFrontRight(),
