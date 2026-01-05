@@ -77,7 +77,7 @@ echo "🏗️  Step 1: Building Maven artifacts..."
 echo "========================================"
 
 # Set Java 17 for build
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-20.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 
 # Build using Maven wrapper or Maven
 if [ -f "./mvnw.sh" ]; then
