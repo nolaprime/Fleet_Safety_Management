@@ -1,10 +1,13 @@
 package com.fleet.telemetry.controller;
 
+import com.fleet.telemetry.controller.exception_handler.GlobalExceptionHandler;
 import com.fleet.telemetry.model.TelemetryData;
 import com.fleet.telemetry.service.TelemetryProducer;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -49,10 +52,15 @@ public class TelemetryController {
      * - Returning success response without waiting for Kafka confirmation
      */
     @PostMapping("/ingest")
-    public ResponseEntity<Map<String, String>> ingestTelemetry(@RequestBody TelemetryData telemetryData) {
+    public ResponseEntity<Map<String, String>> ingestTelemetry(@Valid @RequestBody TelemetryData telemetryData) {
         log.info("📥 Received telemetry data - Truck: {}, Speed: {} km/h", 
                 telemetryData.getTruckId(), 
                 telemetryData.getSpeed());
+                telemetryData.getDriverId();
+                telemetryData.getFuelLevel();
+                telemetryData.getEngineTemp();
+                telemetryData.getLocation();
+                telemetryData.getTirePressure();
         
         // Set timestamp if not provided
         if (telemetryData.getTimestamp() == null) {
@@ -76,9 +84,29 @@ public class TelemetryController {
      */
     @GetMapping("/health")
     public ResponseEntity<Map<String, String>> health() {
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "UP");
-        response.put("service", "Telemetry Ingestion Service");
-        return ResponseEntity.ok(response);
+
+        try{
+
+            TelemetryData invalidData = new TelemetryData(
+
+            );
+
+            invalidData.setSpeed(1000.3);
+            invalidData.getValues();
+
+            Map<String, String> response = Map.of(
+                    "status", "REJECTED",
+                    "message", "Validation Not working"
+            );
+
+            return ResponseEntity.status(400).body(response);
+        } catch (MethodArgumentNotValidException exception) {
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "UP");
+            response.put("service", "Telemetry Ingestion Service");
+            response.put("Validation", "Validation is working");
+            return ResponseEntity.ok(response);
+        }
+
     }
 }
