@@ -1,6 +1,7 @@
 package com.fleet.processor.service;
 
 import com.fleet.processor.model.TelemetryData;
+import com.fleet.processor.model.ViolationEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,9 @@ import java.util.Date;
 
 /**
  * Telemetry Consumer Service
- * 
+ *
  * This service listens to the Kafka topic and processes incoming telemetry messages.
- * 
+ *
  * Key Learning Points:
  * - @KafkaListener annotation for automatic message consumption
  * - Processing messages as they arrive
@@ -27,17 +28,17 @@ public class TelemetryConsumer {
 
     /**
      * Listen to and process telemetry messages from Kafka
-     * 
+     *
      * The @KafkaListener annotation tells Spring to automatically:
      * 1. Connect to Kafka
      * 2. Subscribe to the specified topic
      * 3. Poll for new messages
      * 4. Call this method for each message received
-     * 
+     *
      * Parameters:
      * - topics: The Kafka topic to listen to
      * - groupId: The consumer group (consumers in same group share the load)
-     * 
+     *
      * @param telemetryData The deserialized message from Kafka
      */
     @KafkaListener(topics = "${kafka.topic.raw-telemetry}", groupId = "${spring.kafka.consumer.group-id}")
@@ -45,7 +46,7 @@ public class TelemetryConsumer {
         try {
             // Format the timestamp for better readability
             String formattedTime = dateFormat.format(new Date(telemetryData.getTimestamp()));
-            
+
             // Log the received message
             log.info("📨 Received telemetry from Kafka:");
             log.info("   └─ Truck ID: {}", telemetryData.getTruckId());
@@ -66,7 +67,7 @@ public class TelemetryConsumer {
                     telemetryData.getTirePressure().getFrontRight(),
                     telemetryData.getTirePressure().getRearLeft(),
                     telemetryData.getTirePressure().getRearRight());
-            
+
             // Here you would add your business logic
             // For example:
             // - Validate the data
@@ -74,14 +75,100 @@ public class TelemetryConsumer {
             // - Calculate metrics
             // - Store in database
             // - Publish to another topic
-            
+
             // For now, we'll just add a simple speed check
             if (telemetryData.getSpeed() > 80) {
-                log.warn("⚠️  Speed violation detected! Truck {} exceeding speed limit at {} km/h", 
-                        telemetryData.getTruckId(), 
-                        telemetryData.getSpeed());
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("SPEEDING");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "speeding at " + telemetryData.getSpeed() + " km/h (Driver: " + telemetryData.getDriverId() + ")");
+                violationEvent.setOriginalData(telemetryData);
+                if(telemetryData.getSpeed() <= 100){
+                    violationEvent.setSeverity("MEDIUM");
+                }
+                else{
+                    violationEvent.setSeverity("HIGH");
+                }
+                log.info("Event details: ", violationEvent);
             }
-            
+
+            if(telemetryData.getFuelLevel() < 15){
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("LOW FUEL");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low fuel " + telemetryData.getFuelLevel() + " %");
+                violationEvent.setOriginalData(telemetryData);
+                if(telemetryData.getFuelLevel() >= 5){
+                    violationEvent.setSeverity("HIGH");
+                }
+                else{
+                    violationEvent.setSeverity("CRITICAL");
+                }
+                log.info("Event details: ", violationEvent);
+            }
+
+            if(telemetryData.getEngineTemp() > 110){
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("HIGH_TEMP");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "high engine temperature " + telemetryData.getEngineTemp() + "°C");
+                violationEvent.setOriginalData(telemetryData);
+                if(telemetryData.getFuelLevel() <= 120){
+                    violationEvent.setSeverity("HIGH");
+                }
+                else{
+                    violationEvent.setSeverity("CRITICAL");
+                }
+                log.info("Event details: ", violationEvent);
+            }
+
+            if(telemetryData.getTirePressure().getFrontLeft() < 28){
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("LOW_TIRE_PRESSURE");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: front left tire = " + telemetryData.getTirePressure().getFrontLeft() + "PSI");
+                violationEvent.setOriginalData(telemetryData);
+                violationEvent.setSeverity("CRITICAL");
+                log.info("Event details: ", violationEvent);
+            }
+
+            if(telemetryData.getTirePressure().getFrontRight() < 28){
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("LOW_TIRE_PRESSURE");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: front right tire = " + telemetryData.getTirePressure().getFrontRight() + "PSI");
+                violationEvent.setOriginalData(telemetryData);
+                violationEvent.setSeverity("CRITICAL");
+                log.info("Event details: ", violationEvent);
+            }
+
+            if(telemetryData.getTirePressure().getRearLeft() < 28){
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("LOW_TIRE_PRESSURE");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: back left tire = " + telemetryData.getTirePressure().getRearLeft() + "PSI");
+                violationEvent.setOriginalData(telemetryData);
+                violationEvent.setSeverity("CRITICAL");
+                log.info("Event details: ", violationEvent);
+            }
+
+            if(telemetryData.getTirePressure().getRearRight() < 28){
+                ViolationEvent violationEvent = new ViolationEvent();
+                violationEvent.setTruckId(telemetryData.getTruckId());
+                violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setViolationType("LOW_TIRE_PRESSURE");
+                violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: back right tire = " + telemetryData.getTirePressure().getRearRight() + "PSI");
+                violationEvent.setOriginalData(telemetryData);
+                violationEvent.setSeverity("CRITICAL");
+                log.info("Event details: ", violationEvent);
+            }
+
         } catch (Exception e) {
             log.error("❌ Error processing telemetry data: {}", e.getMessage(), e);
             // In production, you might want to:
