@@ -155,7 +155,6 @@ docker exec kafka kafka-topics --create \
   --if-not-exists &> /dev/null
 
 echo ""
-echo "📊 Creating Kafka topics..."
 docker exec kafka kafka-topics --create \
   --topic violation-event \
   --bootstrap-server localhost:9099 \
