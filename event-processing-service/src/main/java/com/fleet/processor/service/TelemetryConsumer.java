@@ -3,7 +3,9 @@ package com.fleet.processor.service;
 import com.fleet.processor.model.TelemetryData;
 import com.fleet.processor.model.ViolationEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +26,16 @@ import java.util.Date;
 @Slf4j
 public class TelemetryConsumer {
 
+    final KafkaTemplate<String, ViolationEvent> kafkaTemplate;
+
+    @Value("${kafka.topic.violation-event}")
+    private String violationEventTopic;
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public TelemetryConsumer(KafkaTemplate<String, ViolationEvent> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     /**
      * Listen to and process telemetry messages from Kafka
@@ -43,6 +54,8 @@ public class TelemetryConsumer {
      */
     @KafkaListener(topics = "${kafka.topic.raw-telemetry}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeTelemetry(TelemetryData telemetryData) {
+
+
         try {
             // Format the timestamp for better readability
             String formattedTime = dateFormat.format(new Date(telemetryData.getTimestamp()));
@@ -91,6 +104,13 @@ public class TelemetryConsumer {
                     violationEvent.setSeverity("HIGH");
                 }
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
+
             }
 
             if(telemetryData.getFuelLevel() < 15){
@@ -107,6 +127,12 @@ public class TelemetryConsumer {
                     violationEvent.setSeverity("CRITICAL");
                 }
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
             }
 
             if(telemetryData.getEngineTemp() > 110){
@@ -123,6 +149,12 @@ public class TelemetryConsumer {
                     violationEvent.setSeverity("CRITICAL");
                 }
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
             }
 
             if(telemetryData.getTirePressure().getFrontLeft() < 28){
@@ -134,6 +166,12 @@ public class TelemetryConsumer {
                 violationEvent.setOriginalData(telemetryData);
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
             }
 
             if(telemetryData.getTirePressure().getFrontRight() < 28){
@@ -145,6 +183,12 @@ public class TelemetryConsumer {
                 violationEvent.setOriginalData(telemetryData);
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
             }
 
             if(telemetryData.getTirePressure().getRearLeft() < 28){
@@ -156,6 +200,12 @@ public class TelemetryConsumer {
                 violationEvent.setOriginalData(telemetryData);
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
             }
 
             if(telemetryData.getTirePressure().getRearRight() < 28){
@@ -167,6 +217,12 @@ public class TelemetryConsumer {
                 violationEvent.setOriginalData(telemetryData);
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
+                try{
+                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    log.info("Violation data sent to Kafka topic: ", violationEvent);
+                }catch(Exception e) {
+                    log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
+                }
             }
 
         } catch (Exception e) {
