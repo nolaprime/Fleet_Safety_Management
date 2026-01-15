@@ -53,15 +53,16 @@ public class TelemetryController {
      */
     @PostMapping("/ingest")
     public ResponseEntity<Map<String, String>> ingestTelemetry(@Valid @RequestBody TelemetryData telemetryData) {
-        log.info("📥 Received telemetry data - Truck: {}, Speed: {} km/h", 
-                telemetryData.getTruckId(), 
-                telemetryData.getSpeed());
-                telemetryData.getDriverId();
-                telemetryData.getFuelLevel();
-                telemetryData.getEngineTemp();
-                telemetryData.getLocation();
-                telemetryData.getTirePressure();
-        
+        log.info(
+                "📥 Received telemetry data - Truck: {}, Speed: {} km/h, Driver: {}, Fuel Level: {}, Engine Temp: {}, Location: {}, Tire Pressure: {}",
+                telemetryData.getTruckId(),
+                telemetryData.getSpeed(),
+                telemetryData.getDriverId(),
+                telemetryData.getFuelLevel(),
+                telemetryData.getEngineTemp(),
+                telemetryData.getLocation(),
+                telemetryData.getTirePressure());
+
         // Set timestamp if not provided
         if (telemetryData.getTimestamp() == null) {
             telemetryData.setTimestamp(System.currentTimeMillis());
@@ -92,7 +93,6 @@ public class TelemetryController {
             );
 
             invalidData.setSpeed(1000.3);
-            invalidData.getValues();
 
             Map<String, String> response = Map.of(
                     "status", "REJECTED",
@@ -100,7 +100,8 @@ public class TelemetryController {
             );
 
             return ResponseEntity.status(400).body(response);
-        } catch (MethodArgumentNotValidException exception) {
+        } catch (Exception exception) {
+            log.error("Validation is working as expected: {}", exception.getMessage());
             Map<String, String> response = new HashMap<>();
             response.put("status", "UP");
             response.put("service", "Telemetry Ingestion Service");

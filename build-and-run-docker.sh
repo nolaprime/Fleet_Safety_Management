@@ -157,7 +157,7 @@ docker exec kafka kafka-topics --create \
 echo ""
 docker exec kafka kafka-topics --create \
   --topic violation-event \
-  --bootstrap-server localhost:9099 \
+  --bootstrap-server localhost:9092 \
   --partitions 3 \
   --replication-factor 1 \
   --if-not-exists &> /dev/null
