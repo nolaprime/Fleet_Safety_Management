@@ -37,6 +37,8 @@ public class TelemetryConsumer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
+    private ViolationProducer violationProducer;
+
     /**
      * Listen to and process telemetry messages from Kafka
      *
@@ -105,7 +107,7 @@ public class TelemetryConsumer {
                 }
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
@@ -128,7 +130,7 @@ public class TelemetryConsumer {
                 }
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
@@ -150,7 +152,7 @@ public class TelemetryConsumer {
                 }
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
@@ -167,7 +169,7 @@ public class TelemetryConsumer {
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
@@ -184,7 +186,7 @@ public class TelemetryConsumer {
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
@@ -201,7 +203,7 @@ public class TelemetryConsumer {
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
@@ -218,7 +220,7 @@ public class TelemetryConsumer {
                 violationEvent.setSeverity("CRITICAL");
                 log.info("Event details: ", violationEvent);
                 try{
-                    kafkaTemplate.send(violationEventTopic, violationEvent.getTruckId(), violationEvent);
+                    violationProducer.sendViolation(violationEvent);
                     log.info("Violation data sent to Kafka topic: ", violationEvent);
                 }catch(Exception e) {
                     log.error("❌ Failed to send violation data to Kafka: {}", e.getMessage());
