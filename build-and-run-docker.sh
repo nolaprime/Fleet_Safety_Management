@@ -154,6 +154,14 @@ docker exec kafka kafka-topics --create \
   --replication-factor 1 \
   --if-not-exists &> /dev/null
 
+echo ""
+docker exec kafka kafka-topics --create \
+  --topic violation-event \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 \
+  --replication-factor 1 \
+  --if-not-exists &> /dev/null
+
 print_success "Kafka topic 'raw-telemetry' created"
 
 echo ""

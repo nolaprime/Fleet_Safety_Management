@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
  * Simple Telemetry Data Model
@@ -50,9 +49,4 @@ public class TelemetryData {
 
     private Location location;
     private TirePressure tirePressure;
-
-
-    public TelemetryData getValues()  throws MethodArgumentNotValidException {
-        return this;
-    }
 }
