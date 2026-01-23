@@ -23,7 +23,7 @@
     <modules>
         <module>telemetry-ingestion-service</module>
         <module>event-processing-service</module>
-        <!-- <module>driver-scoring-service</module> -->
+        <module>driver-scoring-service</module>
     </modules>
 
     <properties>

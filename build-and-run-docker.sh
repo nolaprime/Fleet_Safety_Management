@@ -82,10 +82,10 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 # Build using Maven wrapper or Maven
 if [ -f "./mvnw.sh" ]; then
     print_info "Using Maven wrapper..."
-    ./mvnw.sh clean package -DskipTests -pl telemetry-ingestion-service,event-processing-service -am
+    ./mvnw.sh clean package -DskipTests -pl telemetry-ingestion-service,event-processing-service,driver-scoring-service -am
 else
     print_info "Using system Maven..."
-    mvn clean package -DskipTests -pl telemetry-ingestion-service,event-processing-service -am
+    mvn clean package -DskipTests -pl telemetry-ingestion-service,event-processing-service,driver-scoring-service -am
 fi
 
 if [ $? -ne 0 ]; then
@@ -107,6 +107,9 @@ docker-compose build telemetry-ingestion-service
 
 print_info "Building event-processing-service image..."
 docker-compose build event-processing-service
+
+print_info "Building driver-scoring-service image..."
+docker-compose build driver-scoring-service
 
 print_success "Docker images built successfully"
 
