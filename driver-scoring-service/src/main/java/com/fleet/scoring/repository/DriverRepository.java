@@ -1,10 +1,10 @@
 package com.fleet.scoring.repository;
 
-import com.fleet.scoring.model.DriverScore;
+import com.fleet.scoring.model.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DriverScoreRepository extends JpaRepository<DriverScore, String> {
+public interface DriverRepository extends JpaRepository<Driver, String> {
 }

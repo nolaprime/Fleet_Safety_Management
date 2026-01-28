@@ -4,18 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Entity
-@Table(name = "driver_score")
-public class DriverScore {
+@Table(name = "drivers")
+public class Driver {
     @Id
-    UUID scoreId;
-    String driverId;
+    String id;
+    String name;
     Integer currentScore;
-    String scoreCategory;
+    Integer totalTrips;
+    BigDecimal totalMiles;
     Integer totalViolations;
-    Timestamp lastViolationDate;
+    Timestamp createdAt;
     Timestamp updatedAt;
 }
