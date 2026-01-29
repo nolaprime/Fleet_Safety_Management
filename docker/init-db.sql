@@ -67,6 +67,10 @@ CREATE TABLE violations (
     
     event_type VARCHAR(50) NOT NULL,
     severity VARCHAR(20) NOT NULL CHECK (severity IN ('LOW', 'MEDIUM', 'HIGH', 'CRITICAL')),
+    message VARCHAR(120) NOT NULL,
+    speed DECIMAL(5, 2) NOT NULL,
+    fuel_level DECIMAL(3, 1) NOT NULL,
+    engine_temp DECIMAL(5, 2) NOT NULL,
     
     location_lat DECIMAL(9, 6) NOT NULL,
     location_lon DECIMAL(9, 6) NOT NULL,
@@ -89,6 +93,17 @@ CREATE INDEX idx_violations_type ON violations(event_type);
 CREATE INDEX idx_violations_severity ON violations(severity);
 CREATE INDEX idx_violations_metadata ON violations USING GIN (metadata);
 
+
+
+CREATE TABLE driver_score (
+    score_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    driver_id  VARCHAR(50) NOT NULL REFERENCES drivers(id) ON DELETE CASCADE,
+    current_score INTEGER NOT NULL,
+    score_category VARCHAR(25) NOT NULL,
+    total_violations INTEGER NOT NULL,
+    last_violation_date TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
 -- Insert sample data for testing
 INSERT INTO drivers (id, name, current_score, total_trips, total_miles, total_violations)
 VALUES 

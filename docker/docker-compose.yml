@@ -145,6 +145,7 @@ services:
     container_name: driver-scoring-service
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9093
+      SPRING_POSTGRES_SERVER_ADDRESS: postgres:5432
       SPRING_PROFILES_ACTIVE: docker
     networks:
       - fleet-network
