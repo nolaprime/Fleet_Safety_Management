@@ -61,7 +61,6 @@ CREATE INDEX idx_trips_truck ON trips(truck_id);
 -- Table: violations
 CREATE TABLE violations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    trip_id UUID REFERENCES trips(id) ON DELETE SET NULL,
     driver_id VARCHAR(50) NOT NULL REFERENCES drivers(id) ON DELETE CASCADE,
     truck_id VARCHAR(50) NOT NULL,
     
@@ -127,7 +126,7 @@ BEGIN
         END IF;
         
         -- Update driver when trip is completed
-        IF TG_TABLE_NAME = 'trips' AND NEW.status = 'COMPLETED' THEN
+        IF TG_TABLE_NAME = 'trips' THEN
             UPDATE drivers 
             SET 
                 total_trips = total_trips + 1,

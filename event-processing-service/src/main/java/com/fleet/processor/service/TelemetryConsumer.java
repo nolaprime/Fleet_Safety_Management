@@ -4,8 +4,10 @@ import com.fleet.processor.model.TelemetryData;
 import com.fleet.processor.model.ViolationEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jms.AcknowledgeMode;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -26,18 +28,18 @@ import java.util.Date;
 @Slf4j
 public class TelemetryConsumer {
 
-    final KafkaTemplate<String, ViolationEvent> kafkaTemplate;
+
 
     @Value("${kafka.topic.violation-event}")
     private String violationEventTopic;
+    private ViolationProducer violationProducer;
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public TelemetryConsumer(KafkaTemplate<String, ViolationEvent> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
+    public TelemetryConsumer(ViolationProducer violationProducer) {
+        this.violationProducer = violationProducer;
     }
 
-    private ViolationProducer violationProducer;
 
     /**
      * Listen to and process telemetry messages from Kafka
@@ -96,6 +98,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("SPEEDING");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "speeding at " + telemetryData.getSpeed() + " km/h (Driver: " + telemetryData.getDriverId() + ")");
                 violationEvent.setOriginalData(telemetryData);
@@ -119,6 +122,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("LOW FUEL");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low fuel " + telemetryData.getFuelLevel() + " %");
                 violationEvent.setOriginalData(telemetryData);
@@ -141,6 +145,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("HIGH_TEMP");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "high engine temperature " + telemetryData.getEngineTemp() + "°C");
                 violationEvent.setOriginalData(telemetryData);
@@ -163,6 +168,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: front left tire = " + telemetryData.getTirePressure().getFrontLeft() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
@@ -180,6 +186,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: front right tire = " + telemetryData.getTirePressure().getFrontRight() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
@@ -197,6 +204,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: back left tire = " + telemetryData.getTirePressure().getRearLeft() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
@@ -214,6 +222,7 @@ public class TelemetryConsumer {
                 ViolationEvent violationEvent = new ViolationEvent();
                 violationEvent.setTruckId(telemetryData.getTruckId());
                 violationEvent.setDriverId(telemetryData.getDriverId());
+                violationEvent.setDetectedAt(telemetryData.getTimestamp());
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: back right tire = " + telemetryData.getTirePressure().getRearRight() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
