@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
@@ -25,8 +26,8 @@ public class ViolationEvent {
     private String severity;         // CRITICAL, HIGH, MEDIUM, LOW
     private String message;
     @NotNull
-//    private TelemetryData originalData;
-    private Long detectedAt;
+    private TelemetryData originalData;
+    private Timestamp detectedAt;
 
 
 }

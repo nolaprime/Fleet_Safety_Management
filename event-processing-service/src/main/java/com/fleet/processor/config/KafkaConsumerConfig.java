@@ -65,6 +65,7 @@ public class KafkaConsumerConfig {
         // Configure JsonDeserializer programmatically (not via properties)
         JsonDeserializer<TelemetryData> valueDeserializer = new JsonDeserializer<>(TelemetryData.class, false);
         valueDeserializer.addTrustedPackages("com.fleet.processor.model");
+
         
         return new DefaultKafkaConsumerFactory<>(
             configProps,
