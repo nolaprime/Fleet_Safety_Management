@@ -12,11 +12,10 @@ import org.hibernate.annotations.GenerationTime;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.UUID;
-
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "violations")
 public class Violation {
     @Id
@@ -32,6 +31,10 @@ public class Violation {
     BigDecimal engineTemp;
     BigDecimal location_lat;
     BigDecimal  location_lon;
+    BigDecimal front_right;
+    BigDecimal front_left;
+    BigDecimal back_right;
+    BigDecimal back_left;
     Integer pointsDeducted;
     Timestamp createdAt;
     Timestamp timestamp;

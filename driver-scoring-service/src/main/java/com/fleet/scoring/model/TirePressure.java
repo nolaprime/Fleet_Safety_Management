@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,17 +16,17 @@ public class TirePressure {
     @NotNull
     @Min(20)
     @Max(120)
-    private Double frontLeft;
+    private BigDecimal frontLeft;
     @NotNull
     @Min(20)
     @Max(120)
-    private Double frontRight;
+    private BigDecimal frontRight;
     @NotNull
     @Min(20)
     @Max(120)
-    private Double rearLeft;
+    private BigDecimal rearLeft;
     @NotNull
     @Min(20)
     @Max(120)
-    private Double rearRight;
+    private BigDecimal rearRight;
 }

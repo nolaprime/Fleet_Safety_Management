@@ -73,6 +73,11 @@ CREATE TABLE violations (
     
     location_lat DECIMAL(9, 6) NOT NULL,
     location_lon DECIMAL(9, 6) NOT NULL,
+
+    front_right DECIMAL(3,1),
+    front_left DECIMAL(3,1),
+    back_right DECIMAL(3,1),
+    back_left DECIMAL(3,1),
     
     points_deducted INTEGER NOT NULL,
     

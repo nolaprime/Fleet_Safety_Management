@@ -172,7 +172,7 @@ public class TelemetryConsumer {
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: front left tire = " + telemetryData.getTirePressure().getFrontLeft() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
-                violationEvent.setSeverity("CRITICAL");
+                violationEvent.setSeverity("HIGH");
                 log.info("Event details: ", violationEvent);
                 try{
                     violationProducer.sendViolation(violationEvent);
@@ -190,7 +190,7 @@ public class TelemetryConsumer {
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: front right tire = " + telemetryData.getTirePressure().getFrontRight() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
-                violationEvent.setSeverity("CRITICAL");
+                violationEvent.setSeverity("HIGH");
                 log.info("Event details: ", violationEvent);
                 try{
                     violationProducer.sendViolation(violationEvent);
@@ -208,7 +208,7 @@ public class TelemetryConsumer {
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: back left tire = " + telemetryData.getTirePressure().getRearLeft() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
-                violationEvent.setSeverity("CRITICAL");
+                violationEvent.setSeverity("HIGH");
                 log.info("Event details: ", violationEvent);
                 try{
                     violationProducer.sendViolation(violationEvent);
@@ -226,7 +226,7 @@ public class TelemetryConsumer {
                 violationEvent.setViolationType("LOW_TIRE_PRESSURE");
                 violationEvent.setMessage("Truck " + telemetryData.getTruckId() + "low tire pressure: back right tire = " + telemetryData.getTirePressure().getRearRight() + "PSI");
                 violationEvent.setOriginalData(telemetryData);
-                violationEvent.setSeverity("CRITICAL");
+                violationEvent.setSeverity("HIGH");
                 log.info("Event details: ", violationEvent);
                 try{
                     violationProducer.sendViolation(violationEvent);
