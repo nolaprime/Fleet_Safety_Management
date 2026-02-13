@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -251,7 +252,7 @@ public class DriverScoringServiceTest {
                 BigDecimal.valueOf(25),
                 5, createdAt, createdAt);
 
-        List<Violation> violations = List.of(v1);
+        List<Violation> violations = new ArrayList<>();
 
         when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
                 .thenReturn(violations);
