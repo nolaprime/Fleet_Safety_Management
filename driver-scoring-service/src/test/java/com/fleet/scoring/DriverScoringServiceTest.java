@@ -252,7 +252,9 @@ public class DriverScoringServiceTest {
                 BigDecimal.valueOf(25),
                 5, createdAt, createdAt);
 
+
         List<Violation> violations = new ArrayList();
+
 
         when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
                 .thenReturn(violations);
