@@ -5,7 +5,8 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Table: drivers
-CREATE TABLE drivers (
+
+CREATE TABLE IF NOT EXISTS drivers (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(100),
     current_score INTEGER DEFAULT 100,

@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class DriverScoringServiceTest {
 
     @Mock
     private DriverScoreRepository driverScoreRepository;
+    private Pageable pageable;
 
     @Test
     void testNoViolations() {
@@ -61,10 +63,10 @@ public class DriverScoringServiceTest {
 
                 List<Violation> violations = List.of(v1);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(100, driverScore.getCurrentScore());
         assertEquals("EXCELLENT", driverScore.getScoreCategory());
     }
@@ -131,10 +133,10 @@ public class DriverScoringServiceTest {
 
         List<Violation> violations = List.of(v1, v2, v3);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(94, driverScore.getCurrentScore());
         assertEquals("EXCELLENT", driverScore.getScoreCategory());
     }
@@ -221,10 +223,10 @@ public class DriverScoringServiceTest {
 
         List<Violation> violations = List.of(v1, v2, v3, v4);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(88, driverScore.getCurrentScore());
         assertEquals("GOOD", driverScore.getScoreCategory());
     }
@@ -256,10 +258,10 @@ public class DriverScoringServiceTest {
         List<Violation> violations = new ArrayList();
 
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(100, driverScore.getCurrentScore());
         assertEquals("EXCELLENT", driverScore.getScoreCategory());
     }
@@ -346,10 +348,10 @@ public class DriverScoringServiceTest {
 
         List<Violation> violations = List.of(v1, v2, v3, v4);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(0, driverScore.getCurrentScore());
         assertEquals("CRITICAL", driverScore.getScoreCategory());
     }
