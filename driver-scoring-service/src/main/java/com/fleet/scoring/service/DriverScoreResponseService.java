@@ -102,7 +102,11 @@ public class DriverScoreResponseService {
             driverNeedingAttentionDTO.setDriverId(bottomDriver.getDriverId());
             driverNeedingAttentionDTO.setCurrentScore(bottomDriver.getCurrentScore());
             driverNeedingAttentionDTO.setScoreCategory(bottomDriver.getScoreCategory());
-            driverNeedingAttentionDTO.setRecommendedAction("Immediate suspension and retraining required");
+            if(bottomDriver.getCurrentScore() < 60){
+                driverNeedingAttentionDTO.setRecommendedAction("Immediate suspension and retraining required");
+            }else{
+                driverNeedingAttentionDTO.setRecommendedAction("No recommendation for now.");
+            }
             LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
             List<Violation> violationsInLast30Days = violationRepository.findAllByDriverIdAndCreatedAtAfter(bottomDriver.getDriverId(), thirtyDaysAgo, pageable);
             int numOfViolations = Math.toIntExact(violationsInLast30Days.stream().count());

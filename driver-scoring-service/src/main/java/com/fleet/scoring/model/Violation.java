@@ -20,7 +20,6 @@ import java.util.UUID;
 public class Violation {
     @Id
     UUID id;
-    UUID tripId;
     String truckId;
     String driverId;
     String eventType;

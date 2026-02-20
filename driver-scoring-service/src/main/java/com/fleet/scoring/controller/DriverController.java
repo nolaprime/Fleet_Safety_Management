@@ -4,6 +4,7 @@ import com.fleet.scoring.dto.BottomDriversResponse;
 import com.fleet.scoring.dto.DriverScoreResponse;
 import com.fleet.scoring.dto.LeaderboardResponse;
 import com.fleet.scoring.dto.ViolationHistoryResponse;
+import com.fleet.scoring.model.DriverScore;
 import com.fleet.scoring.repository.DriverScoreRepository;
 import com.fleet.scoring.repository.ViolationRepository;
 import com.fleet.scoring.service.DriverScoreResponseService;
@@ -50,11 +51,12 @@ public class DriverController {
     @GetMapping("/{driverId}/score")
     public ResponseEntity<Object> getScore(@PathVariable
                                                             @NotBlank(message = "Driver ID cannot be empty")
-                                                            @Pattern(regexp = "^DRV-[A-Z]{3}-\\d{3}$", message = "Driver ID must start with 'DRV-'")
+                                                            @Pattern(regexp = "^DRV-\\d{4}$", message = "Driver ID must start with 'DRV-'")
                                                             String driverId,
                                                         Pageable pageable) {
         try {
-            if (driverScoreRepository.findByDriverId(driverId) == null) {
+            DriverScore driverScore = driverScoreRepository.findByDriverId(driverId);
+            if (driverScore == null) {
                 Map<String, Object> resposne = new HashMap<>();
                 resposne.put("message", "Driver not found with Id: " + driverId);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposne);
@@ -71,7 +73,7 @@ public class DriverController {
     public ResponseEntity<ViolationHistoryResponse> getViolations(
             @PathVariable String driverId,
             @RequestParam(defaultValue = "30")
-            @NotBlank
+//            @NotBlank
             @Positive @Max(1000) int days,
             Pageable pageable){
         try {
@@ -88,7 +90,6 @@ public class DriverController {
     @GetMapping("/leaderboard")
     public ResponseEntity<LeaderboardResponse> getLeaderboard(
             @RequestParam(defaultValue = "10")
-            @NotBlank
             @Positive @Max(50) int limit, Pageable pageable) {
         try {
             return ResponseEntity.ok(driverScoreResponseService.getTopPerformingDrivers(limit, pageable));
@@ -100,7 +101,6 @@ public class DriverController {
     @GetMapping("/bottom")
     public ResponseEntity<BottomDriversResponse> getBottomDrivers(
             @RequestParam(defaultValue = "10")
-            @NotBlank
             @Positive @Max(50) int limit, Pageable pageable){
         try {
             return ResponseEntity.ok(driverScoreResponseService.getBadPerformingDrivers(limit, pageable));

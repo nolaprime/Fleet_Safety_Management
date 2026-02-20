@@ -92,7 +92,6 @@ CREATE TABLE violations (
 );
 
 CREATE INDEX idx_violations_driver ON violations(driver_id);
-CREATE INDEX idx_violations_trip ON violations(trip_id);
 CREATE INDEX idx_violations_timestamp ON violations(timestamp DESC);
 CREATE INDEX idx_violations_type ON violations(event_type);
 CREATE INDEX idx_violations_severity ON violations(severity);

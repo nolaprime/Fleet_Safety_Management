@@ -44,7 +44,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt2 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(2));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "",
@@ -78,7 +77,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt2 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(2));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                                    UUID.randomUUID(),
                             "Tr111",
                             "Dr111",
                             "SPEEDING",
@@ -96,7 +94,6 @@ public class DriverScoringServiceTest {
                             2, createdAt, createdAt);
 
         Violation v2 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -114,7 +111,6 @@ public class DriverScoringServiceTest {
                 2, createdAt2, createdAt2);
 
         Violation v3 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -149,7 +145,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt3 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -167,7 +162,6 @@ public class DriverScoringServiceTest {
                 2, createdAt, createdAt);
 
         Violation v2 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW FUEL",
@@ -185,7 +179,6 @@ public class DriverScoringServiceTest {
                 3, createdAt2, createdAt2);
 
         Violation v3 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "HIGH_TEMP",
@@ -203,7 +196,6 @@ public class DriverScoringServiceTest {
                 5, createdAt3, createdAt3);
 
         Violation v4 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW_TIRE_PRESSURE",
@@ -237,7 +229,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now().minusMonths(2));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -274,7 +265,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt3 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -292,7 +282,6 @@ public class DriverScoringServiceTest {
                 30, createdAt, createdAt);
 
         Violation v2 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW FUEL",
@@ -310,7 +299,6 @@ public class DriverScoringServiceTest {
                 30, createdAt2, createdAt2);
 
         Violation v3 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "HIGH_TEMP",
@@ -328,7 +316,6 @@ public class DriverScoringServiceTest {
                 30, createdAt3, createdAt3);
 
         Violation v4 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW_TIRE_PRESSURE",
