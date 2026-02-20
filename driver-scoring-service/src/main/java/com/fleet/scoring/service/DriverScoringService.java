@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Pageable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,13 +32,13 @@ public class DriverScoringService {
     }
 
 
-    public DriverScore calculateScore(String driverId) {
+    public DriverScore calculateScore(String driverId, Pageable pageable) {
 
         DriverScore driverScore = new DriverScore();
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
         int score = 100;
         int numOfViolations = 0;
-        List<Violation> violationItems = violationRepository.findAllByDriverIdAndViolationDateAfter(driverId, thirtyDaysAgo);
+        List<Violation> violationItems = violationRepository.findAllByDriverIdAndCreatedAtAfter(driverId, thirtyDaysAgo, pageable);
 
         for(Violation items : violationItems){
             score = score - items.getPointsDeducted();

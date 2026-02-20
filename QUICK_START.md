@@ -117,6 +117,26 @@ docker-compose down
 docker-compose down -v
 ```
 
+## 🔄 Reset and Re-Seed the Database
+
+Use this when you want the sample data loaded again:
+
+```bash
+cd docker
+
+# Remove the existing database volume
+docker-compose down -v
+
+# Start Postgres to re-run init scripts (schema + seed data)
+docker-compose up -d postgres
+```
+
+After Postgres is healthy, you can start the rest of the stack:
+
+```bash
+docker-compose up -d
+```
+
 ---
 
 ## 🎯 What You'll Learn

@@ -11,6 +11,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Pageable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -20,15 +21,18 @@ public class ViolationConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(ViolationConsumer.class);
     private final ViolationRepository violationRepository;
+    private final DriverScoringService driverScoringService;
+    private Pageable pageable;
 
-    public ViolationConsumer(ViolationRepository violationRepository) {
+    public ViolationConsumer(ViolationRepository violationRepository, DriverScoringService driverScoringService ) {
         this.violationRepository = violationRepository;
+        this.driverScoringService = driverScoringService;
     }
 
     @KafkaListener(topics = "${kafka.topic.violation-event}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeViolation(ViolationEvent event){
 
-        DriverScoringService driverScoringService = null;
+//        DriverScoringService driverScoringService = new DriverScoringService();
         try {
             Violation violation = new Violation();
             violation.setId(UUID.randomUUID());
@@ -74,7 +78,7 @@ public class ViolationConsumer {
             }
 
             violationRepository.save(violation);
-            driverScoringService.calculateScore(violation.getDriverId());
+            driverScoringService.calculateScore(violation.getDriverId(), pageable);
 
             log.info("violation event saved in the database.", violation);
         }catch(Exception e){

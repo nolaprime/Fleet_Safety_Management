@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class DriverScoringServiceTest {
 
     @Mock
     private DriverScoreRepository driverScoreRepository;
+    private Pageable pageable;
 
     @Test
     void testNoViolations() {
@@ -42,7 +44,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt2 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(2));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "",
@@ -61,10 +62,10 @@ public class DriverScoringServiceTest {
 
                 List<Violation> violations = List.of(v1);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(100, driverScore.getCurrentScore());
         assertEquals("EXCELLENT", driverScore.getScoreCategory());
     }
@@ -76,7 +77,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt2 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(2));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                                    UUID.randomUUID(),
                             "Tr111",
                             "Dr111",
                             "SPEEDING",
@@ -94,7 +94,6 @@ public class DriverScoringServiceTest {
                             2, createdAt, createdAt);
 
         Violation v2 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -112,7 +111,6 @@ public class DriverScoringServiceTest {
                 2, createdAt2, createdAt2);
 
         Violation v3 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -131,10 +129,10 @@ public class DriverScoringServiceTest {
 
         List<Violation> violations = List.of(v1, v2, v3);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(94, driverScore.getCurrentScore());
         assertEquals("EXCELLENT", driverScore.getScoreCategory());
     }
@@ -147,7 +145,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt3 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -165,7 +162,6 @@ public class DriverScoringServiceTest {
                 2, createdAt, createdAt);
 
         Violation v2 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW FUEL",
@@ -183,7 +179,6 @@ public class DriverScoringServiceTest {
                 3, createdAt2, createdAt2);
 
         Violation v3 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "HIGH_TEMP",
@@ -201,7 +196,6 @@ public class DriverScoringServiceTest {
                 5, createdAt3, createdAt3);
 
         Violation v4 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW_TIRE_PRESSURE",
@@ -221,10 +215,10 @@ public class DriverScoringServiceTest {
 
         List<Violation> violations = List.of(v1, v2, v3, v4);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(88, driverScore.getCurrentScore());
         assertEquals("GOOD", driverScore.getScoreCategory());
     }
@@ -235,7 +229,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now().minusMonths(2));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -256,10 +249,10 @@ public class DriverScoringServiceTest {
         List<Violation> violations = new ArrayList();
 
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(100, driverScore.getCurrentScore());
         assertEquals("EXCELLENT", driverScore.getScoreCategory());
     }
@@ -272,7 +265,6 @@ public class DriverScoringServiceTest {
         Timestamp createdAt3 = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10));
 
         Violation v1 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "SPEEDING",
@@ -290,7 +282,6 @@ public class DriverScoringServiceTest {
                 30, createdAt, createdAt);
 
         Violation v2 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW FUEL",
@@ -308,7 +299,6 @@ public class DriverScoringServiceTest {
                 30, createdAt2, createdAt2);
 
         Violation v3 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "HIGH_TEMP",
@@ -326,7 +316,6 @@ public class DriverScoringServiceTest {
                 30, createdAt3, createdAt3);
 
         Violation v4 = new Violation(UUID.randomUUID(),
-                UUID.randomUUID(),
                 "Tr111",
                 "Dr111",
                 "LOW_TIRE_PRESSURE",
@@ -346,10 +335,10 @@ public class DriverScoringServiceTest {
 
         List<Violation> violations = List.of(v1, v2, v3, v4);
 
-        when(violationRepository.findAllByDriverIdAndViolationDateAfter(eq(v1.getDriverId()), any()))
+        when(violationRepository.findAllByDriverIdAndCreatedAtAfter(eq(v1.getDriverId()), any(), pageable))
                 .thenReturn(violations);
 
-        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId());
+        DriverScore driverScore = driverScoringService.calculateScore(v1.getDriverId(), pageable);
         assertEquals(0, driverScore.getCurrentScore());
         assertEquals("CRITICAL", driverScore.getScoreCategory());
     }
