@@ -5,7 +5,8 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Table: drivers
-CREATE TABLE drivers (
+
+CREATE TABLE IF NOT EXISTS drivers (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(100),
     current_score INTEGER DEFAULT 100,
@@ -91,7 +92,6 @@ CREATE TABLE violations (
 );
 
 CREATE INDEX idx_violations_driver ON violations(driver_id);
-CREATE INDEX idx_violations_trip ON violations(trip_id);
 CREATE INDEX idx_violations_timestamp ON violations(timestamp DESC);
 CREATE INDEX idx_violations_type ON violations(event_type);
 CREATE INDEX idx_violations_severity ON violations(severity);
