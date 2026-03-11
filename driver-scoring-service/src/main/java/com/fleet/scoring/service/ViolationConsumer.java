@@ -76,14 +76,18 @@ public class ViolationConsumer {
             if(event.getViolationType().equals("LOW_TIRE_PRESSURE")) {
                     violation.setPointsDeducted(2);
             }
-
-            violationRepository.save(violation);
+            String driverId = violation.getDriverId();
+            driverScoringService.ensureDriverExists(driverId, violation.getTimestamp());
+            this.saveViolation(violation);
             driverScoringService.calculateScore(violation.getDriverId(), pageable);
 
             log.info("violation event saved in the database.", violation);
         }catch(Exception e){
             log.error("❌ Failed to save violation data in the database: {}", e.getMessage());
         }
+    }
+    public void saveViolation (Violation violation){
+        violationRepository.save(violation);
     }
 
 }
